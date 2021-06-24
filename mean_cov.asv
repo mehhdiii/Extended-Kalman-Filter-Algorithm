@@ -1,0 +1,7 @@
+function [xhat_k,P_k] = mean_cov(xhat_last,Fk, P_last, T, Qk, vk, phi_last, y_last)
+%Computes the mean and covariance of x_k|k-1
+
+xhat_k = [xhat_last+T*vk*cos(phi_last); y_last+T*vk*sin(phi_last); phi_last+];
+outputArg2 = inputArg2;
+end
+
