@@ -1,8 +1,9 @@
 function H_k = H_jacobian(xhat_last)
 x = xhat_last(1); 
 y = xhat_last(2); 
+rho = sqrt(x^2+y^2); 
 
-H_k = [x/(sqrt(x^2+y^2)) y/(sqrt(x^2+y^2)) 0];
+H_k = [x/rho y/rho 0; -y/rho^2 x/rho^2 0];
 
 
 end

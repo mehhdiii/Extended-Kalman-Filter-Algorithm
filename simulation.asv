@@ -1,8 +1,8 @@
 
 % define the system: 
-vk = 0.1; 
+vk = 1; 
 wk = 0.01;
-T = 0.05;
+T = 0.1;
 % xk = f(xk-1)+vk = xk-1 + Tvkcos(phi{k-1}); yk-1 + Tvk sin(phi{k-1});
 % phi{k-1} + T*wk
 
@@ -10,9 +10,9 @@ T = 0.05;
 
 
 % define signal parameters: system
-var_v1 =1e-6; 
-var_v2 =1e-6; 
-var_v3 = 1e-6; 
+var_v1 =1e-5; 
+var_v2 =1e-5; 
+var_v3 = 1e-5; 
 Q_k = diag([var_v1 var_v2 var_v3]); 
 
 
@@ -53,15 +53,14 @@ for k = 1:ITER
     xhat_last = xhat_optimal; 
     y_last = y_k; 
     x_last = x_k; 
-    P_last = P_optimal; 
+    
     historyX_k(:, k) = x_k; 
     historyY_k(:, k) = y_k; 
     historyX_predict(:, k) = xhat_optimal; 
 end
 
-P = ITER-1
 hold on 
-plot(historyX_k(1, end-P:end), historyX_k(2, end-P:end), 'k-')
-plot(historyY_k(1, end-P:end), historyY_k(2, end-P:end), 'rx')
-plot(historyX_predict(1, end-P:end), historyX_predict(2, end-P:end), 'b--')
-legend('True trajectory', 'Sensor measurement', 'Predicted trajectory', 'location', 'best')
+plot(historyX_k(1, :), historyX_k(2, :), 'k-')
+plot(historyY_k(1, :), historyY_k(2, :), 'rx')
+plot(historyX_predict(1, :), historyX_predict(2, :), 'b--')
+legend('True trajectory', 'Sensor measurement ')
