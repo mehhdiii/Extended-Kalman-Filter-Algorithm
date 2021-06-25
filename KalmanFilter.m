@@ -1,16 +1,15 @@
-function [xhat_optimal,P_optimal] = KalmanFilter(y_k, phi_last, xhat_last, P_last, Qk, y_last)
-%Computes the mean and covariance of x_k|k-1
-vk = 1; 
-wk = 0.01;
-T = 0.1;
+function [xhat_optimal,P_optimal] = KalmanFilter(y_k, F_k, H_k, Q_k, R_k, xhat_last, P_last, vk, wk, T)
+%Predicts the state xk and covariance matrix pk given k-1 information 
 
-Fk = F_jacobian(T, vk, phi_last); 
-[xhat_k, P_k] = mean_cov(xhat_last,Fk, P_last, Qk, phi_last, y_last, vk, wk, T);
-H_k = H_jacobian(xk,yk); 
-[yhat_last,K_k] = measurement_predict(xhat, yk, H_k, P_last, R_k); 
+%compute predicted mean and covariance
+[xhat_k_last, P_k_last] = mean_cov(xhat_last,F_k, P_last, Q_k, vk, wk, T); 
+
+%predict the measured value
+[yhat_k_last,K_k] = measurement_predict(xhat_k_last, H_k, P_k_last, R_k); 
+
 %Estimate: 
-xhat_optimal = xhat_k + K_k*(y_k-yhat_last); 
-P_optimal = P_k-K_k*H_k*P_k;
+xhat_optimal = xhat_k_last + K_k*(y_k-yhat_k_last); 
+P_optimal = P_k_last-K_k*H_k*P_k_last;
 
 
 end

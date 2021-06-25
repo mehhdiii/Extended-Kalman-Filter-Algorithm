@@ -1,7 +1,8 @@
-function Hk = H_jacobian(xk,yk)
+function H_k = H_jacobian(xhat_last)
+x = xhat_last(1); 
+y = xhat_last(2); 
 
-
-Hk = [xk/(sqrt(xk^2+yk^2)) yk/(sqrt(xk^2+yk^2)) 0];
+H_k = [x/(sqrt(x^2+y^2)) y/(sqrt(x^2+y^2)) 0];
 
 
 end
