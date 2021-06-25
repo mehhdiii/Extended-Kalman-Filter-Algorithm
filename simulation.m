@@ -48,7 +48,7 @@ for k = 1:ITER
     y_k = sqrt(x_k(1)^2+x_k(2)^2)+w;
     
     %run KF algorithm 
-    [xhat_optimal,P_optimal] = KalmanFilter(y_k, F_k, H_k, Q_k, W_k, xhat_last, P_last, vk, wk, T); 
+    [xhat_optimal,P_optimal] = KalmanFilter(y_k, F_k, H_k, Q_k, W_k, xhat_last, P_last, vk, wk, T) 
     xhat_last = xhat_optimal; 
     y_last = y_k; 
     x_last = x_k; 
