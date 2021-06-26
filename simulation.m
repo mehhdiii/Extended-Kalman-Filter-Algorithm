@@ -59,9 +59,9 @@ for k = 1:ITER
     historyX_predict(:, k) = xhat_optimal; 
 end
 
-P = ITER-1
+P = 50
 hold on 
 plot(historyX_k(1, end-P:end), historyX_k(2, end-P:end), 'k-')
-plot(historyY_k(1, end-P:end), historyY_k(2, end-P:end), 'rx')
+plot(historyY_k(1, end-P:end).*cos(historyY_k(2, end-P:end)), historyY_k(1, end-P:end).*sin(historyY_k(2, end-P:end)), 'rx')
 plot(historyX_predict(1, end-P:end), historyX_predict(2, end-P:end), 'b--')
 legend('True trajectory', 'Sensor measurement', 'Predicted trajectory', 'location', 'best')
