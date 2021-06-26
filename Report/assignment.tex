@@ -81,11 +81,11 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
     keywordstyle=\color[rgb]{0.627,0.126,0.941},
     commentstyle=\color[rgb]{0.133,0.545,0.133},
     stringstyle=\color[rgb]{01,0,0},
-    numbers=left,
-    numberstyle=\small,
-    stepnumber=1,
-    numbersep=10pt,
-    captionpos=t,
+    % numbers=left,
+    % numberstyle=\small,
+    % stepnumber=1,
+    % numbersep=10pt,
+    % captionpos=t,
     escapeinside={\%*}{*)}
 }
 
@@ -206,8 +206,12 @@ where $v_k$, $\omega_k$ are the linear and angular velocities of the object resp
 \begin{equation*}
     v_k = 0.1, \\ \omega_k = 0.01, \\ T = 0.05
 \end{equation*}
-\subsection*{Definitions}
-The co-variance Matrices of Noise were taken as follows: 
+\subsection*{Algorithm}
+
+\subsubsection{Initialization}
+\begin{enumerate}
+    \item 
+    The co-variance Matrix of process Noise was taken as follows: 
 \begin{equation*}
     Q_k = 
     \begin{bmatrix}
@@ -216,6 +220,8 @@ The co-variance Matrices of Noise were taken as follows:
     0 & 0 & 1e^{-6}
     \end{bmatrix}
 \end{equation*}
+
+    \item The co-variance Matrix of Radar Noise was taken as follows: 
 \begin{equation*}
     R_k = 
     \begin{bmatrix}
@@ -224,9 +230,99 @@ The co-variance Matrices of Noise were taken as follows:
     0 & 0 & 1e^{-4}
     \end{bmatrix}
 \end{equation*}
-$\mathbf{MATLAB}$'s $randn()$ function was used to generate the the noise vectors. 
+    
+    \item 
+    $\mathbf{MATLAB}$'s $randn()$ function was used to generate the the noise vectors $V_k$ and $W_k$ of dimensions $3\times 1$ and $2 \times 1$ respectively.  
 
-\subsection{Results}
+    \item 
+    Compute the true value of $x_k$ and $y_k$ from the model's equation (5) and (6) to simulate the non-linear object and Radar.
+    
+\end{enumerate}
+
+\subsubsection{Linearization}
+\begin{enumerate}
+    \item 
+    The pseudo function for this step is as follows: 
+    \begin{lstlisting}
+        F_k = F_jacobian(T, vk, xhat_km1)
+    \end{lstlisting}
+    
+    \item The jacobian of $f$ is computed as follows: 
+    \begin{equation*}
+         F_k = \begin{bmatrix}
+         \frac{\partial f_1}{\partial x_k} & \frac{\partial f_1}{\partial y_k} & \frac{\partial f_1}{\partial \phi_k} \\ 
+         \frac{\partial f_2}{\partial x_k} & \frac{\partial f_2}{\partial y_k} & \frac{\partial f_2}{\partial \phi_k} \\ 
+         \frac{\partial f_3}{\partial x_k} & \frac{\partial f_3}{\partial y_k} & \frac{\partial f_3}{\partial \phi_k}
+         \end{bmatrix}_{\mathbf{x} = \hat{x}_{k-1|k-1}}
+    \end{equation*}
+    where: 
+    \begin{equation*}
+        \begin{bmatrix}
+            f_1 \\
+            f_2 \\
+            f_3 
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+            x_{k-1} + Tv_k \cos(\phi_{k-1})\\
+             y_{k-1} + Tv_k \sin(\phi_{k-1})\\
+             \phi_{k-1} + Tw_k 
+        \end{bmatrix}_{\mathbf{x} = \hat{x}_{k-1|k-1}}
+    \end{equation*}
+    
+     substituting values and taking respective partial derivatives, we get: 
+    \begin{equation*}
+         F_k = \begin{bmatrix}
+         1 & 0 & -Tv_k \sin{\phi_{k-1}} \\ 
+         0 & 1 & Tv_k \cos{\phi_{k-1}} \\ 
+         0 & 0 & 1
+         \end{bmatrix}_{\mathbf{x} = \hat{x}_{k-1|k-1}}
+    \end{equation*}
+\end{enumerate}
+
+\subsubsection{State Prediction}
+\begin{enumerate}
+    \item 
+    Pseudo function for this step is: 
+     \begin{lstlisting}
+        [xhat_predict, P_predict] = state_predict(xhat_km1, P_km1, F_k,  Q_k, vk, wk, T)
+    \end{lstlisting}
+    \item The mean is predicted by substituting $\hat{x}_{k-1|k-1}$ directly in $f$ of equation (5)
+    \item The co-variance is predicted as described earlier.
+    
+\end{enumerate}
+
+\subsubsection{Linearization}
+\begin{enumerate}
+    \item 
+    The pseudo function for this step is as follows: 
+    \begin{lstlisting}
+        H_k = H_jacobian(xhat_predict)
+    \end{lstlisting}
+    
+    \item The jacobian of $h$ is computed similar to what was described earlier. It comes out to be:
+    \begin{equation*}
+         H_k = \begin{bmatrix}
+         -\frac{x_k}{\sqrt{x_k^2+y_k^2} } & \frac{x_k}{\sqrt{x_k^2+y_k^2} } & 0 \\ 
+         \frac{-y_k}{x_k^2+y_k^2} & \frac{x_k}{x_k^2+y_k^2} & 0 
+         \end{bmatrix}_{\mathbf{x} = \hat{x}_{k|k-1}}
+    \end{equation*}
+\end{enumerate}
+
+\subsubsection{Measurement Prediction}
+
+    The pseudo function for this step is as follows: 
+    \begin{lstlisting}
+        [yhat_last,K_k] = measurement_predict(xhat_predict, H_k, P_predict, R_k)
+    \end{lstlisting}
+    
+\subsubsection{Estimation}
+    The pseudo function for this step is as follows: 
+    \begin{lstlisting}
+        [xhat_optimal,P_optimal] = estimate(y_k, yhat_predict, P_predict, H_k, K_k)
+    \end{lstlisting}
+
+\subsection*{Results}
 The true trajectory, sensor observations and predicted trajectory are plotted in figure 1. As can be observed, the EKF algorithm is able to rightly and accurately able to localize the non-linear object. 
 \begin{figure}[h]
     \centering

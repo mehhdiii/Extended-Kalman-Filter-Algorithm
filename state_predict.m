@@ -1,4 +1,4 @@
-function [xhat_k,P_k] = mean_cov(xhat_last,Fk, P_last, Qk, vk, wk, T)
+function [xhat_k,P_k] = state_predict(xhat_last,Fk, P_last, Qk, vk, wk, T)
 %Computes the mean and covariance of x_k|k-1
 x = xhat_last(1); 
 y = xhat_last(2); 

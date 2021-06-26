@@ -5,7 +5,7 @@ function [xhat_optimal,P_optimal] = KalmanFilter(y_k, Q_k, R_k, xhat_last, P_las
 F_k = F_jacobian(T, vk, xhat_last); 
 
 %compute predicted mean and covariance
-[xhat_predict, P_k_predict] = mean_cov(xhat_last,F_k, P_last, Q_k, vk, wk, T); 
+[xhat_predict, P_k_predict] = state_predict(xhat_last,F_k, P_last, Q_k, vk, wk, T); 
 
 %compute jacobian of sensor: 
 H_k = H_jacobian(xhat_predict); 
