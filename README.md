@@ -1,7 +1,7 @@
 # The Extended Kalman Filter
-The repository impliments Extended Kalman filter algorithm for a non-linear system given observations from a radar. The description for the system, EKF algorithm and simulation steps and results can be found in the [report](Report/report.pdf) 
+The repository impliments Extended Kalman filter algorithm for a non-linear system given observations from a radar. The description for the system, EKF algorithm and simulation steps can be found in the [report](Report/report.pdf) 
 
-##$ Working and results
+## Working and results
 The Filter tracks a non-linear object given the range and angle of the object obtained from the Radar. The results of the filter are given in the figure below: 
 
 ![EKF results](results.jpg)
