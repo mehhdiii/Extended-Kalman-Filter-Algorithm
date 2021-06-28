@@ -113,7 +113,7 @@ The algorithm fails when the system cannot be represented as $(1)$ and $(2)$. Th
 \subsection*{The discrete time non-linear system}
 Consider a non-linear system, defined by the following equations: 
 \begin{equation}
-    x_k = f(x_k) + V_k 
+    x_k = f(x_{k-1}) + V_k 
 \end{equation}
 \begin{equation}
     y_k = h(x_{k}) + W_k
