@@ -4,7 +4,7 @@ The repository impliments Extended Kalman filter algorithm for a non-linear syst
 ## Working and results
 The Filter tracks a non-linear object given the range and angle of the object obtained from the Radar. The results of the filter are given in the figure below: 
 
-![EKF results](simulation/results)
+![EKF results](simulation/results.png)
 
 ## Contribution 
 In order to contribute to this project, you can go through the [report](Report/report.pdf)/[report.tex](Report/report.tex) and suggest changes to the respective functions by creating a pull request. 
