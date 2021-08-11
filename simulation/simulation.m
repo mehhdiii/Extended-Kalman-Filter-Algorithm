@@ -32,10 +32,11 @@ end
 
 figure()
 hold on 
-plot(filter.Xtrue(1, 2:end), filter.Xtrue(2, 2:end), 'black', 'linewidth', 2)
-plot(filter.Xhistory(1, 2:end), filter.Xhistory(2, 2:end), 'red--', 'linewidth', 2)
+plot(filter.truehistory(1, 2:end), filter.truehistory(2, 2:end), 'black', 'linewidth', 2)
+plot(filter.predhistory(1, 2:end), filter.predhistory(2, 2:end), 'red--', 'linewidth', 2)
+% plot(filter.measurementhistory(1, 2:end), filter.measurementhistory(2, 2:end), 'orageo')
 title("Trajectory of Non-Linear system", 'fontsize',14)
 lgd = legend('True trajectory','Predicted trajectory','location', 'best')
-lgd.FontSize = 12
+lgd.FontSize = 12; 
 hold off
 print -depsc results.eps
