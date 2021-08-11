@@ -1,4 +1,4 @@
-function H_k = H_jacobian(xhat_last)
+function H_k = measurement_jacobian(xhat_last, T)
 x = xhat_last(1); 
 y = xhat_last(2); 
 rho = sqrt(x^2+y^2); 
