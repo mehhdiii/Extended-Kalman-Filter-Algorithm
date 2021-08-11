@@ -52,7 +52,8 @@ classdef ExtendedKF < handle
          self.vk = sqrt(self.statecovariance)*randn(self.state_dim(1), 1); 
          %create noisy plant state: REFERENCE VALUE
          xtrue_last = self.Xtrue(:, end); 
-         self.xk = self.statetransitionfcn(xtrue_last, self.T) + self.vk;
+         xtrue = self.statetransitionfcn(xtrue_last, self.T); 
+         self.xk =  xtrue + self.vk;
          
          xhat_last = self.Xhistory(:, end); 
          F = self.statej(xhat_last, self.T); 
@@ -63,7 +64,7 @@ classdef ExtendedKF < handle
          self.k = self.k+1; 
          self.Plast = Ppred; 
          self.Xhistory(:, self.k) = Xpred;  
-         self.Xtrue(:, self.k) = self.xk; 
+         self.Xtrue(:, self.k) = xtrue; 
          
 
       end
