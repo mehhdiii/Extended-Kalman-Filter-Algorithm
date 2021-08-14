@@ -13,32 +13,16 @@
     <param.products.id />
     <param.products.version />
     <param.platforms />
-    <param.guid>cedafdb9-6a59-4c93-a3b5-ddf093b20511</param.guid>
-    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
-% from packaging.  Excludes should be listed relative to the toolbox folder.
-% Some examples of how to specify excludes are provided below:
-%
-% A single file in the toolbox folder:
-.git
+    <param.guid>d358422b-cb2d-4baa-ba50-a173a644611f</param.guid>
+    <param.exclude.filters>.git
 simulation
 .gitignore
 LICENSE
 Report
 .gitattributes
 README.md
-%
-% A single file in a subfolder of the toolbox folder:
-% example/.svn
-%
-% All files in a subfolder of the toolbox folder:
-% example/*
-%
-% All files of a certain name in all subfolders of the toolbox folder:
-% **/.svn
-%
-% All files matching a pattern in all subfolders of the toolbox folder:
-% **/*.bak
-%</param.exclude.filters>
+demos.xml
+html</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
