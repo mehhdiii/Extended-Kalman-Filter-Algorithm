@@ -24,7 +24,7 @@ initial_x = [0; 0; 0]; %Last optimal predicted value (X_hat{k-1}): zero initiall
 
 %define EKfilter object 
 filter = ExtendedKF(statetransition_f, measurement_f, state_j, measurement_j, state_covariance,...
-              measurement_covariance, T, initial_x)
+              measurement_covariance, T, initial_x, true)
 for k = 1:ITER   
     [Xpred, Ppred] = filter.predict(); 
     [Xcorr, Pcorr] = filter.correct(); 

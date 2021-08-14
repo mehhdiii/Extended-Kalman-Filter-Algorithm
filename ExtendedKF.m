@@ -26,8 +26,8 @@ classdef ExtendedKF < handle
       %constructor of class
       function self = ExtendedKF(statetransition_f, measurement_f,...
               state_j, measurement_j, state_covariance,...
-              measurement_covariance, sampling_time, initial_x)
-          if nargin == 8
+              measurement_covariance, sampling_time, initial_x, additivenoise)
+          if nargin == 9
               self.statetransitionfcn = statetransition_f; 
               self.measurementfcn = measurement_f; 
               self.statej = state_j; 
@@ -42,7 +42,7 @@ classdef ExtendedKF < handle
               self.predhistory = zeros(self.state_dim); 
               self.measurementhistory = zeros(self.measurement_dim); 
               self.k = 1; 
-              self.hasadditivenoise = true; 
+              self.hasadditivenoise = additivenoise; 
               self.Plast = eye(self.state_dim(1)); 
           end
           
@@ -54,12 +54,13 @@ classdef ExtendedKF < handle
          self.vk = sqrt(self.statecovariance)*randn(self.state_dim(1), 1); 
          %create noisy plant state: REFERENCE VALUE
          xtrue_last = self.predhistory(:, end); 
-         xtrue = self.statetransitionfcn(xtrue_last, self.T); 
-         self.xk =  xtrue + self.vk;
+         
+         xtrue = self.statetransitionfcn(xtrue_last, self.T, 0); 
+         self.xk =  self.statetransitionfcn(xtrue_last, self.T, self.vk);
          
          xhat_last = self.predhistory(:, end); 
          F = self.statej(xhat_last, self.T); 
-         Xpred = self.statetransitionfcn(xhat_last, self.T); 
+         Xpred = self.statetransitionfcn(xhat_last, self.T, 0); 
          Ppred = F*(self.Plast)*F' + self.statecovariance; 
          
          %save the new values: 
@@ -75,12 +76,12 @@ classdef ExtendedKF < handle
          %create measurement noise
          self.wk = sqrt(self.measurementcovariance)*randn(self.measurement_dim(1), 1); 
          %create true measurement
-         yk = self.measurementfcn(self.xk, self.T) + self.wk; 
+         yk = self.measurementfcn(self.xk, self.T, self.wk); 
          
          %correcting measurement
          Xpred = self.predhistory(:, self.k); 
          H = self.measurementj(Xpred, self.T); 
-         Ypred = self.measurementfcn(Xpred); 
+         Ypred = self.measurementfcn(Xpred, self.T, 0); 
          Sk = H*self.Plast*H' + self.measurementcovariance; 
          Kk = self.Plast*H'*inv(Sk); 
          
