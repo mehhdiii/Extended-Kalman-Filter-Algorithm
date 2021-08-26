@@ -1,24 +1,30 @@
-classdef ExtendedKF < handle
+classdef ExtendedKF < handle 
    properties
       
-      predhistory
-      truehistory
-      Plast
+      %History variables: 
+      predhistory %history log of predictions
+      truehistory %history log of true plant values 
+      measurementhistory %history log of measurements
+      Plast %last P covariance matrix
+      
+      %Function handles: 
       statetransitionfcn 
       measurementfcn 
       statej
       measurementj
       statecovariance
       measurementcovariance
-      T
-      xk 
-      k
+      
+      %General system variables: 
+      T %sampling time
+      xk %input vector at time k 
+      k %Discrete time instance (t = k)
       vk %plant noise
       wk %measurement noise
-      state_dim
-      measurement_dim
-      hasadditivenoise
-      measurementhistory
+      state_dim %dimensions of the state vector
+      measurement_dim %dimension of the measurement vector
+      hasadditivenoise %true if process has additive noise
+      
    end
    
    methods
@@ -52,10 +58,10 @@ classdef ExtendedKF < handle
       function [Xpred, Ppred] = predict(self) 
          %create plant noise
          self.vk = sqrt(self.statecovariance)*randn(self.state_dim(1), 1); 
-         %create noisy plant state: REFERENCE VALUE
-         xtrue_last = self.predhistory(:, end); 
+         %create noisy plant true state: REFERENCE VALUE
+         xtrue_last = self.truehistory(:, end); 
          
-         xtrue = self.statetransitionfcn(xtrue_last, self.T, 0); 
+%          xtrue = self.statetransitionfcn(xtrue_last, self.T, self.vk); 
          self.xk =  self.statetransitionfcn(xtrue_last, self.T, self.vk);
          
          xhat_last = self.predhistory(:, end); 
@@ -67,7 +73,7 @@ classdef ExtendedKF < handle
          self.k = self.k+1; 
          self.Plast = Ppred; 
          self.predhistory(:, self.k) = Xpred;  
-         self.truehistory(:, self.k) = xtrue; 
+         self.truehistory(:, self.k) = self.xk; 
          
 
       end
@@ -89,11 +95,11 @@ classdef ExtendedKF < handle
          
          %correct the readings 
          Xcorr = Xpred+Kk*(yk-Ypred);
-         Pcorr = self.Plast - Kk*H*self.Plast;
+         Pcorr = self.Plast - Kk*H*self.Plast ;
          
          
          %overwrite to existing values: 
-%          self.measurementhistory(:, self.k) = yk; 
+         self.measurementhistory(:, self.k) = yk; 
          self.Plast = Pcorr; 
          self.predhistory(:, self.k) = Xcorr;  
 

@@ -1,6 +1,6 @@
 close all; clear; 
-T = 0.9;
-ITER = 1e2; %number of iterations
+T = 0.1;
+ITER = 1e3; %number of iterations
 
 % define the system: 
 statetransition_f = @state_function; 
@@ -9,14 +9,14 @@ state_j = @state_jacobian;
 measurement_j = @measurement_jacobian; 
 
 % define signal parameters: system
-var_v1 =1e-2; 
-var_v2 =1e-2; 
-var_v3 = 1e-2; 
+var_v1 =1e-1; 
+var_v2 =1e-1; 
+var_v3 = 1e-1; 
 state_covariance = diag([var_v1 var_v2 var_v3]); 
 
 
 % define signal parameters: observation/sensor
-var_w1 = 1e-2;
+var_w1 = 1e-2; 
 var_w2 = 1e-2; 
 measurement_covariance = diag([var_w1 var_w2]); 
 
@@ -34,9 +34,10 @@ figure()
 hold on 
 plot(filter.truehistory(1, 2:end), filter.truehistory(2, 2:end), 'black', 'linewidth', 2)
 plot(filter.predhistory(1, 2:end), filter.predhistory(2, 2:end), 'red--', 'linewidth', 2)
-% plot(filter.measurementhistory(1, 2:end), filter.measurementhistory(2, 2:end), 'orageo')
+% plot(filter.measurementhistory(1, 2:end).*cos(filter.measurementhistory(2, 2:end)),...
+%     filter.measurementhistory(1, 2:end).*sin(filter.measurementhistory(2, 2:end)), 'o')
 title("Trajectory of Non-Linear system", 'fontsize',14)
-lgd = legend('True trajectory','Predicted trajectory','location', 'best')
+lgd = legend('True trajectory','Estimated trajectory', 'Measurement','location', 'best')
 lgd.FontSize = 12; 
 hold off
 print -depsc results.eps

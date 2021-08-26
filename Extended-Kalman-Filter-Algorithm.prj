@@ -1,7 +1,7 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration file="E:\HU repository\OneDrive - Habib University\Academics-HU\Summers 2021\Object Tracking\Simulations\Extended-Kalman-Filter-Algorithm\Extended-Kalman-Filter-Algorithm.prj" location="E:\HU repository\OneDrive - Habib University\Academics-HU\Summers 2021\Object Tracking\Simulations\Extended-Kalman-Filter-Algorithm" name="Extended-Kalman-Filter-Algorithm" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>Extended-Kalman-Filter-Algorithm</param.appname>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Mehdi Khorasani</param.authnamewatermark>
     <param.email />
     <param.company />
     <param.summary />
@@ -13,16 +13,34 @@
     <param.products.id />
     <param.products.version />
     <param.platforms />
-    <param.guid>d358422b-cb2d-4baa-ba50-a173a644611f</param.guid>
-    <param.exclude.filters>.git
-simulation
-.gitignore
-LICENSE
-Report
-.gitattributes
-README.md
-demos.xml
-html</param.exclude.filters>
+    <param.guid>f88cd9ea-15e0-4616-b374-35a7f3703764</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+*t
+*l
+*n
+*.asv
+*E
+*.md
+*e
+*s</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
@@ -50,7 +68,6 @@ html</param.exclude.filters>
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.authnamewatermark />
       <param.email />
       <param.company />
       <param.summary />
